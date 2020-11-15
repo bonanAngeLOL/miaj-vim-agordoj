@@ -2,7 +2,7 @@ set nocompatible
 syntax on
 colorscheme monokai
 " ĉu mi ĉi tion bezonas? xD
-echo 'Kio okazas fiulo, ĉu vi jam feke pretiĝas? xDxDxd'
+" echo 'Kio okazas fiulo, ĉu vi jam feke pretiĝas? xDxDxd'
 set encoding=UTF-8
 set autoindent
 set number
@@ -16,8 +16,14 @@ set splitbelow
 set cursorline
 set textwidth=0
 
+" Swap files location
+set directory^=~/.vim/swapfiles//
+
+" backspace fix
+set backspace=indent,eol,start
+
 " Ruler to 80 column
-set colorcolumn=80
+set colorcolumn=115
 
 " Shift config
 filetype plugin indent on
@@ -43,6 +49,7 @@ call plug#begin('~/.vim/plugged')
     let g:monokai_gui_italic = 1
     let NERDTreeQuitOnOpen=1
     Plug 'vim-airline/vim-airline-themes'
+
     " Nice theme
     let g:airline_theme='wombat'
     let g:airline_powerline_fonts = 1
@@ -51,7 +58,12 @@ call plug#begin('~/.vim/plugged')
     let g:airline_mode_map = {
     \   'i':'ENMETO',
     \   'n':'NORMALA',
-    \   '^V':'VIDUMA BLOKO'
+    \   '^V':'VIDUMA BLOKO',
+    \   '^v':'VIDUMA BLOKO',
+    \   'v':'VIDUMA',
+    \   '^r':'ANSTATAŬIGI',
+    \   'R':'ANSTATAŬIGI',
+    \   '^R':'ANSTATAŬIGI'
     \}
 call plug#end()
 
@@ -80,8 +92,8 @@ autocmd filetype c nnoremap <F10> :w<bar>cd %:p:h<bar>let f=expand('%')<bar>let 
 autocmd filetype c nnoremap <F9> :w<bar>term ++shell gcc %:p -o %:p:r && %:p:r<CR>
 
 "Don't remember what is was for jajajaja
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
+" autocmd BufWinLeave *.* mkview
+" autocmd BufWinEnter *.* silent loadview
 
 "This is just a test to work with Python Venv
 function! Venv()
@@ -92,7 +104,6 @@ function! Venv()
     let cwd = getcwd()
     execute ':term ++close ++shell mkdir -p '.name.' && cd "$_" && python3 -m venv venv  && touch main.py && mkdir -p .vim && echo "{\"python.jediEnabled\": false, \"python.pythonPath\": \"'.cwd.'/'.name.'/venv/bin/python\"}" >> .vim/coc-settings.json'
     execute ':cd '.name.' | tabnew main.py '
-    :<CR>
     call popup_dialog('New '.name.' venv created!!!', #{line: 0, col: 0, highlight: 'WildMenu', close: 'click', time:4000, })
     call inputrestore()
 endfunction
